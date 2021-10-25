@@ -28,9 +28,9 @@ class LinkedList {
     this.length++;
     return this;
   }
-  printListValues() {
+  printListValues(node) {
     const array = [];
-    let currentNode = this.head;
+    let currentNode = node || this.head;
     while (currentNode !== null) {
       array.push(currentNode.value);
       currentNode = currentNode.next;
@@ -71,6 +71,43 @@ class LinkedList {
     }
     return currentNode;
   }
+  reverse() {
+    const resultNode = { ...this.tail };
+    let currentNode = this.head;
+    let tempNode = {};
+    while (currentNode.next !== null) {
+      const newNode = this._getNewNode(currentNode.value);
+      tempNode = resultNode.next;
+      resultNode.next = newNode;
+      newNode.next = tempNode;
+      currentNode = currentNode.next;
+    }
+    console.log(this.printListValues(resultNode));
+    return resultNode;
+  }
+
+  /**
+   * For the first node, there are 3 pointers,
+   * current -> head, prev -> null  & 3rd Var temp (next) -> to store value of next.
+   * As we will be breaking the link for next and assigning it to prev so we need to store the
+   * link in a temp variable (next).
+   *
+   * Finally the head should point to the last node which is prev here.
+   * @returns
+   */
+  reverse2() {
+    let currentNode = this.head;
+    let prev = null;
+    let next = null;
+    while (currentNode !== null) {
+      next = currentNode.next;
+      currentNode.next = prev;
+      prev = currentNode;
+      currentNode = next;
+    }
+    this.head = prev;
+    return this;
+  }
 }
 
 const myLinkedList = new LinkedList(10);
@@ -84,3 +121,4 @@ console.log(myLinkedList.printListValues());
 myLinkedList.remove(4);
 myLinkedList.remove(1);
 console.log(myLinkedList.printListValues());
+console.log(myLinkedList.reverse2());

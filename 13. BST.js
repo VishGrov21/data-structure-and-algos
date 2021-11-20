@@ -48,7 +48,7 @@ class BST {
     }
     return false;
   }
-  
+
   remove(value) {
     if (!this.root) {
       return false;
@@ -125,8 +125,72 @@ class BST {
       }
     }
   }
+
+  breadthFirstSearch() {
+    const result = [];
+    let currentNode = this.root;
+    const queue = [];
+    queue.push(currentNode);
+    while (queue.length > 0) {
+      currentNode = queue.shift();
+      result.push(currentNode.value);
+      if (currentNode.left) queue.push(currentNode.left);
+      if (currentNode.right) queue.push(currentNode.right);
+    }
+    return result;
+  }
+
+  breadthFirstSearchRecursion(queue, result) {
+    if (!queue.length) return result;
+    let currentNode = queue.shift();
+    result.push(currentNode.value);
+    if (currentNode.left) queue.push(currentNode.left);
+    if (currentNode.right) queue.push(currentNode.right);
+    return this.breadthFirstSearchRecursion(queue, result);
+  }
+  dfsInOrder() {
+    return traverseInOrder(this.root, []);
+  }
+  dfsPreOrder() {
+    return traversePreOrder(this.root, []);
+  }
+  dfsPostOrder() {
+    return traversePostOrder(this.root, []);
+  }
 }
 
+function traverseInOrder(node, result) {
+  if (node.left) {
+    traverseInOrder(node.left, result);
+  }
+  result.push(node.value);
+  if (node.right) {
+    traverseInOrder(node.right, result);
+  }
+  return result;
+}
+
+function traversePreOrder(node, result) {
+  result.push(node.value);
+  if (node.left) {
+    traversePreOrder(node.left, result);
+  }
+  if (node.right) {
+    traversePreOrder(node.right, result);
+  }
+  return result;
+}
+
+function traversePostOrder(node, result) {
+  if (node.left) {
+    traversePostOrder(node.left, result);
+  }
+  if (node.right) {
+    traversePostOrder(node.right, result);
+  }
+  result.push(node.value);
+  return result;
+}
 const tree = new BST();
 
 tree.insert(25);
@@ -134,7 +198,16 @@ tree.insert(20);
 tree.insert(45);
 tree.insert(17);
 tree.insert(48);
-tree.remove(48);
+// tree.remove(48);
 console.log(tree.lookup(48));
+const bfs = tree.breadthFirstSearch();
+const bfsr = tree.breadthFirstSearchRecursion([tree.root], []);
+const dfsi = tree.dfsInOrder();
+const dfsPre = tree.dfsPreOrder();
+const dfsPost = tree.dfsPostOrder();
 
-console.log(tree);
+console.log(bfsr);
+console.log(bfs);
+console.log(dfsi);
+console.log(dfsPre);
+console.log(dfsPost);

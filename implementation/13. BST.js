@@ -148,6 +148,7 @@ class BST {
     if (currentNode.right) queue.push(currentNode.right);
     return this.breadthFirstSearchRecursion(queue, result);
   }
+  // Depth First Search
   dfsInOrder() {
     return traverseInOrder(this.root, []);
   }
